@@ -1,0 +1,40 @@
+require('dotenv').config();
+
+// const debug = require('debug')('hubdb-client');
+const nodeFetch = require('node-fetch');
+const Bottleneck = require('bottleneck');
+const limiter = new Bottleneck({ minTime: 125 });
+const fetch = limiter.wrap(nodeFetch);
+
+const hapikey = process.env.HS_API_KEY;
+const portalId = process.env.REACT_APP_HS_PORTAL_ID;
+const hsBase = 'https://api.hubapi.com/';
+const endpoints = {
+  tableInfo: id => `${hsBase}hubdb/api/v2/tables/${id}?portalId=${portalId}`,
+  getTableRows: id => `${hsBase}hubdb/api/v2/tables/${id}/rows?portalId=${portalId}`,
+  addTableRow: id => `${hsBase}hubdb/api/v2/tables/${id}/rows?hapikey=${hapikey}`,
+};
+
+const request = async (url, opts = {}) => {
+  try {
+    const response = await fetch(url, opts);
+    const json = await response.json();
+    return json;
+  } catch (e) {
+    throw new Error('Unable to complete request')
+  }
+};
+
+const getTableInfo = id => request(endpoints.tableInfo(id));
+const getTableRows = id => request(endpoints.getTableRows(id));
+const addTableRow = (id, values) => request(endpoints.addTableRow(id), {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ values }),
+});
+
+module.exports = {
+  getTableInfo,
+  addTableRow,
+  getTableRows,
+};

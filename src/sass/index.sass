@@ -1,0 +1,41 @@
+@import 'config'
+
+body, html
+  margin: 0
+  padding: 0
+
+#lfe-root
+  position: relative
+  line-height: 1.55
+  font-family: $fontFallback
+  min-height: 100vh
+  background-color: #fff
+
+  @media (max-width: 520px)
+    font-size: 85%
+
+  *, *:before, *:after
+    box-sizing: border-box
+
+  h1,h2,h3,h4,h5,h6 
+    line-height: 1
+    margin: 0
+  
+  p 
+    margin: 0
+
+  .mapboxgl-popup
+    z-index: 99
+
+  .mapboxgl-popup-close-button
+    padding: 0
+    width: 2rem
+    height: 2rem
+    font-size: 1rem
+    line-height: 0
+    color: #a5a5a5
+    transition: background 0.2s ease, color 0.2s ease
+    &:hover
+      color: #333
+    &:focus
+      outline: 2px solid rgba(33,33,33,0.3)

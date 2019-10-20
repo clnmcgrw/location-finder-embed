@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    ["@quickbaseoss/babel-plugin-styled-components-css-namespace", {
+      "cssNamespace": "body #lfe-root"
+    }],
+    "babel-plugin-styled-components"
+  ]
+}
