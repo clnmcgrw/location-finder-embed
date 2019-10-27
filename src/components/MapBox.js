@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactMapGL, { FlyToInterpolator, NavigationControl, Marker, Popup, TRANSITION_EVENTS } from 'react-map-gl';

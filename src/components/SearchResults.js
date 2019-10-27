@@ -32,7 +32,7 @@ const ResultsList = styled.ul`
 const ResultsItem = styled.div`
   padding: 2rem 1.5rem 1.5rem;
   padding-left: 2.5rem;
-  transform: ${props => props.active ? 'translateX(0)' : 'translateX(0)'};
+  transform: ${props => props.active ? 'translateX(1rem)' : 'translateX(0)'};
   transition: transform 0.35s ${EASING.outCirc}, opacity 0.3s linear;
   h3 {
     font-size: 1.1rem;
@@ -76,7 +76,7 @@ const SearchResults = ({
   useEffect(() => {
     if (!match.params.index) return;
     const index = parseInt(match.params.index);
-    if (index !== activeIndex) {
+    if (index !== activeIndex && index < RESULT_DEFAULTS.limit) {
       setActiveIndex(index);
     }
   }, [match]);

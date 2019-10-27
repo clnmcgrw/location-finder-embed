@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import Loader from './components/Loader';
 import ViewToggle from './components/ViewToggle';
@@ -16,42 +16,43 @@ import { MAP_DEFAULTS, RESULT_DEFAULTS, COLORS } from './constants';
 const App = ({ history, match, location }) => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [allowGeolocate, setAllowGeolocate] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [viewPosition, setViewPosition] = useState(MAP_DEFAULTS.viewPosition);
   const [activeIndex, setActiveIndex] = useState(false);
   const [zoom, setZoom] = useState(MAP_DEFAULTS.zoom);
   const [error, setError] = useState(false);
-
-  // pagination
   const page = useRef(1);
   const pageTotal = useRef(null);
+
+
+  const getSearchResults = async (latitude, longitude) => {
+    return getResultsByProximity(latitude, longitude).then(data => {
+      console.log('Raw hubdb response: ', data);
+      const results = getSearchResultsFromRows(data.objects);
+      console.log('Search results: ', results);
+      setSearchResults(results);
+      pageTotal.current = Math.ceil(data.total / RESULT_DEFAULTS.limit);
+    }).catch(error => {
+      console.log('Request error: ', error);
+      setError('Problem getting results.');
+    }).finally(() => setLoading(false));
+  };
+  const getSearchTerm = async (latitude, longitude) => {
+    return reverseGeocode(latitude, longitude).then(data => {
+      const term = searchTermFromGeodata(data.features);
+      console.log(term);
+      setSearchTerm(term);
+    }).catch(error => {
+      console.log('Rev geocode err: ', error);
+    });
+  };
 
   // app mounted - get users location
   useEffect(() => {
     console.log('Location', location);
     console.log('Match: ', match);
-    const getSearchResults = async (latitude, longitude) => {
-      return getResultsByProximity(latitude, longitude).then(data => {
-        console.log('Raw hubdb response: ', data);
-        const results = getSearchResultsFromRows(data.objects);
-        console.log('Search results: ', results);
-        setSearchResults(results);
-        pageTotal.current = Math.ceil(data.total / RESULT_DEFAULTS.limit);
-      }).catch(error => {
-        console.log('Request error: ', error);
-        setError('Problem getting results.');
-      }).finally(() => setLoading(false));
-    };
-    const getSearchTerm = async (latitude, longitude) => {
-      return reverseGeocode(latitude, longitude).then(data => {
-        const term = searchTermFromGeodata(data.features);
-        console.log(term);
-        setSearchTerm(term);
-      }).catch(error => {
-        console.log('Rev geocode err: ', error);
-      });
-    };
 
     // linking to already performed search
     if (match.params.latitude && match.params.longitude) {
@@ -85,6 +86,7 @@ const App = ({ history, match, location }) => {
       })();
     }, () => {
       setLoading(false);
+      setAllowGeolocate(false);
     });
   }, []);
 
@@ -142,6 +144,21 @@ const App = ({ history, match, location }) => {
   // user initiated geolocation
   const geolocationClickHandler = useCallback(e => {
     setLoading(true);
+    navigator.geolocation.getCurrentPosition(pos => {
+      const latitude = roundToDecimals(pos.coords.latitude);
+      const longitude = roundToDecimals(pos.coords.longitude);
+      console.log('Got coords: ', { latitude, longitude });
+      setViewPosition({ latitude, longitude });
+
+      history.push(`/search/${latitude}/${longitude}`);
+
+      (async () => {
+        await getSearchResults(latitude, longitude);
+        await getSearchTerm(latitude, longitude);
+      })();
+    }, () => {
+      setLoading(false);
+    });
   });
 
   // load more - gets results with offset
@@ -177,6 +194,7 @@ const App = ({ history, match, location }) => {
            setLoading={setLoading}
            searchTerm={searchTerm}
            setSearchTerm={setSearchTerm}
+           showGeolocate={allowGeolocate}
            onGeolocate={geolocationClickHandler}
            onSubmit={onSearchFormSubmit} />
         </ContentLiner>

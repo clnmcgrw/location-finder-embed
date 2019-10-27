@@ -42,6 +42,7 @@ const InputWrapper = styled.div`
     background: none;
     color: ${COLORS.darkGray};
     cursor: pointer;
+    outline: none;
     .icon-compass {
       font-size: 1.5rem;
     }
@@ -78,6 +79,8 @@ const SearchForm = ({
   loading,
   searchTerm,
   setSearchTerm,
+  showGeolocate,
+  onGeolocate,
   onSubmit
 }) => {
   const [localError, setLocalError] = useState(false);
@@ -114,10 +117,11 @@ const SearchForm = ({
             label="Search For a Store"
             onChange={onChange}
             value={searchTerm} />
-          <button type="button">
+          {showGeolocate &&
+          <button type="button" onClick={onGeolocate}>
             <div className="icon-compass"></div>
             <span>Use My Location</span>
-          </button>
+          </button>}
         </InputWrapper>
         <Button type="submit" disabled={loading}>
           Search Now
