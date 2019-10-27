@@ -15,8 +15,12 @@ export const ListingSection = styled.section`
 `;
 export const ContentLiner = styled.div`
   position: relative;
-  padding: 5rem 2rem 2rem;
+  padding: 5rem 1rem 2rem;
   min-height: ${props => props.results ? '400px' : '0'};
+  @media (min-width:${BREAKPOINTS.small}) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 `;
 
 // map embed parent

@@ -83,11 +83,18 @@ const App = ({ history, match, location }) => {
         await getSearchResults(latitude, longitude);
         await getSearchTerm(latitude, longitude);
       })();
-    }, error => {
+    }, () => {
       setLoading(false);
-      console.log('Geolocation denied', error);
     });
   }, []);
+
+  // active index change 
+  useEffect(() => {
+    if (searchResults.length && activeIndex !== false) {
+      const { lat: latitude, long: longitude } = searchResults[activeIndex].map_location;
+      setViewPosition({ latitude, longitude });
+    }
+  }, [activeIndex]);
 
   // search submit callback -
   // called when no local errors exist in SearchForm
@@ -132,11 +139,12 @@ const App = ({ history, match, location }) => {
     });
   }, [searchTerm, history]);
 
+  // user initiated geolocation
+  const geolocationClickHandler = useCallback(e => {
+    setLoading(true);
+  });
 
-  useEffect(() => {
-
-  }, [activeIndex]);
-
+  // load more - gets results with offset
   const loadMoreClickHandler = useCallback(e => {
     e.preventDefault();
     setLoadingMore(true);
@@ -149,7 +157,7 @@ const App = ({ history, match, location }) => {
         const results = getSearchResultsFromRows(data.objects);
         console.log('Search results: ', results);
         page.current = page.current + 1;
-        setSearchResults([...results, ...searchResults]);
+        setSearchResults([...searchResults, ...results]);
       })
       .catch(error => {
         console.log('Request error: ', error);
@@ -169,6 +177,7 @@ const App = ({ history, match, location }) => {
            setLoading={setLoading}
            searchTerm={searchTerm}
            setSearchTerm={setSearchTerm}
+           onGeolocate={geolocationClickHandler}
            onSubmit={onSearchFormSubmit} />
         </ContentLiner>
         <ContentLiner>

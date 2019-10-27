@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { COLORS } from '../constants';
+import { COLORS, BREAKPOINTS } from '../constants';
 
 
 const InputWrapper = styled.div`
   position: relative;
-  flex-grow: 2;
-  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  
+  @media (min-width:${BREAKPOINTS.small}) {
+    flex-grow: 2;
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+
   label {
     display: block;
     position: absolute;
     pointer-events: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     top: 0.9rem;
     left: 1.2rem;
     background: ${COLORS.white};
@@ -26,7 +32,7 @@ const Input = styled.input`
   appearance: none;
   display: block;
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding: 1rem;
   border-radius: 6px;
   border: 2px solid ${COLORS.gray};

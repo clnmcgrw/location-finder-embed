@@ -3,7 +3,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import TextInput from './TextInput';
 import Button from './Button';
-import { COLORS } from '../constants';
+import { COLORS, BREAKPOINTS } from '../constants';
 
 const FormWrapper = styled.div`
   position: relative;
@@ -21,10 +21,17 @@ const FormWrapper = styled.div`
 const Form = styled.form`
   position: relative;
   display: flex;
+  flex-direction: column;
+  @media (min-width:${BREAKPOINTS.small}) {
+    flex-direction: row;
+  }
 `;
 const InputWrapper = styled.div`
   position: relative;
-  flex-grow: 2;
+  @media (min-width:${BREAKPOINTS.small}) {
+    flex-grow: 2;
+  }
+
   > button {
     position: absolute;
     top: 50%;

@@ -6,8 +6,7 @@ import ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
 import AppRoute from './AppRoute';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
-import './sass/index.sass';
+import './styles/index.sass';
 
 ReactDOM.render(
   <Router>

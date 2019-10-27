@@ -2,8 +2,8 @@
 import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
-import { Address, Phone } from './ResultItem';
-import { COLORS, EASING } from '../constants';
+import { ArrowIcon, Address, Phone } from './ResultItem';
+import { RESULT_DEFAULTS, COLORS, EASING } from '../constants';
 
 const ResultsList = styled.ul`
   list-style: none;
@@ -30,38 +30,41 @@ const ResultsList = styled.ul`
   }
 `;
 const ResultsItem = styled.div`
-  padding: 1.5rem 0 1.5em 1.5em;
-  transform: ${props => props.active ? 'translateX(1.5rem)' : 'translateX(0)'};
+  padding: 2rem 1.5rem 1.5rem;
+  padding-left: 2.5rem;
+  transform: ${props => props.active ? 'translateX(0)' : 'translateX(0)'};
   transition: transform 0.35s ${EASING.outCirc}, opacity 0.3s linear;
   h3 {
-    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem;
+    > span {
+      display: inline-block;
+      position: relative;
+      padding-right: 1.5rem;
+    }
   }
   + span {
-    opacity: ${props => props.active ? '1' : '0'};
-    transform: ${props => props.active ? 'translateX(0)' : 'translateX(-3rem)'};
+    opacity: ${props => props.active ? '1' : '1'};
+    transform: ${props => props.active ? 'translateX(0)' : 'translateX(0)'};
   }
 `;
 
-const ArrowIcon = styled.span`
+const Number = styled.span`
   display: block;
   position: absolute;
-  width: 1rem;
-  height: 1rem;
-  top: 2.2rem;
-  left: 1rem;
-  margin-top: -0.5rem;
-  color: ${COLORS.primary};
-  transition: transform 0.35s ${EASING.outCirc}, opacity 0.35s ease;
-  svg {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
+  z-index: 1;
+  top: 1.5rem;
+  left: 0.5rem;
+  padding-top: 0.35rem;
+  font-size: 0.9rem;
+  color: ${COLORS.secondary};
 `;
 
+
+const getNumberDisplay = index => {
+  const count = index + 1;
+  return count > 9 ? count : `0${count}`;
+};
 
 const SearchResults = ({
   searchResults,
@@ -69,10 +72,6 @@ const SearchResults = ({
   setActiveIndex,
   match 
 }) => {
-
-  useEffect(() => {
-    console.log('From results list: ', match);
-  }, []);
 
   useEffect(() => {
     if (!match.params.index) return;
@@ -90,18 +89,16 @@ const SearchResults = ({
     <ResultsList>
       {searchResults.map((result, index) => 
       <li key={result.id}>
+        <Number>{getNumberDisplay(index)}</Number>
         <Link to={getLinkTo(index)}>View Store on Map</Link>
         <ResultsItem active={activeIndex === index}>
-          <h3>{result.name}</h3>
+          <h3>
+            <span>{result.name} <ArrowIcon active={activeIndex === index} /></span>
+          </h3>
           <Address result={result} />
-          <Phone>{result.phone}</Phone>
+          {RESULT_DEFAULTS.showPhone &&
+          <Phone>{result.phone}</Phone>}
         </ResultsItem>
-        <ArrowIcon>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </ArrowIcon>
       </li>)}
     </ResultsList>
   );

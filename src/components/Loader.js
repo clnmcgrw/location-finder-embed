@@ -30,9 +30,9 @@ const Indicator = styled.span`
   overflow: hidden;
   text-indent: -499px;
   border-radius: 50%;
-  border-top: 3px solid rgba(10, 145, 145, 0.2);
-  border-right: 3px solid rgba(10, 145, 145, 0.2);
-  border-bottom: 3px solid rgba(10, 145, 145, 0.2);
+  border-top: 3px solid rgba(244, 177, 62, 0.25);
+  border-right: 3px solid rgba(244, 177, 62, 0.25);
+  border-bottom: 3px solid rgba(244, 177, 62, 0.25);
   border-left: 3px solid ${COLORS.primary};
   ${loaderAnimation};
 `;

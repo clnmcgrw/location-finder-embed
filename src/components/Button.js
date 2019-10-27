@@ -9,7 +9,7 @@ const ButtonEl = styled.button`
   display: inline-block;
   padding: 1rem 2rem;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   font-weight: bold;
   border-radius: 6px;

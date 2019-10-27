@@ -28,7 +28,7 @@ export const MAP_DEFAULTS = {
     latitude: 37.7577,
     longitude: -122.4376,
   },
-  zoom: 9,
+  zoom: 11,
   maxZoom: 18,
   minZoom: 2,
   scrollZoom: false,
@@ -40,8 +40,9 @@ export const RESULT_DEFAULTS = {
   locationColumn: 'map_location',
   portalId: '5273025',
   tableId: process.env.REACT_APP_HS_HUBDB_TABLE_ID,
-  limit: 5,
+  limit: 15,
   absoluteLimit: 100,
+  showPhone: false,
   ...getConfig('RESULT_DEFAULTS'),
 };
 
@@ -67,7 +68,7 @@ export const RESULT_KEYS_MAP = {
 // style settings
 export const COLORS = {
   primary: '#f4b13e',
-  secondary: '#a5a5a5',
+  secondary: '#c0d8be',
   error: '#d44646',
   dark: '#444444',
   light: '#f5f5f5',
