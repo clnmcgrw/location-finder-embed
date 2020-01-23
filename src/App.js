@@ -26,7 +26,6 @@ const App = ({ history, match, location }) => {
   const page = useRef(1);
   const pageTotal = useRef(null);
 
-
   const getSearchResults = async (latitude, longitude) => {
     return getResultsByProximity(latitude, longitude).then(data => {
       console.log('Raw hubdb response: ', data);
@@ -51,9 +50,6 @@ const App = ({ history, match, location }) => {
 
   // app mounted - get users location
   useEffect(() => {
-    console.log('Location', location);
-    console.log('Match: ', match);
-
     // linking to already performed search
     if (match.params.latitude && match.params.longitude) {
       const latitude = parseFloat(match.params.latitude);

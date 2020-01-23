@@ -20,17 +20,18 @@ const ActionRow = styled.div`
 `;
 
 const Button = styled.button`
-  width: 48%;
+  display: block;
   text-align: center;
   border-radius: 4px;
   font-size: 0.7rem;
   text-transform: uppercase;
-  padding: 1rem 0.5em;
+  padding: 1rem 1.5em;
   cursor: pointer;
   font-weight: bold;
   background: transparent;
-  border: 1px solid ${COLORS.darkGray};
+  border: 2px solid ${COLORS.gray};
   color: ${COLORS.darkGray};
+  transition: background 0.3s ease;
   &:hover { 
     background: ${COLORS.gray};
   }
@@ -44,7 +45,6 @@ const PopupHtml = ({ result }) => {
       <Address result={result} />
       <ActionRow>
         <Button>Get Directions</Button>
-        <Button>Store Hours</Button>
       </ActionRow>
     </Popup>
   );

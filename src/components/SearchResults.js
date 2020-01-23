@@ -2,14 +2,14 @@
 import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
-import { ArrowIcon, Address, Phone } from './ResultItem';
+import { ArrowIcon, Address, Phone, Hours } from './ResultItem';
 import { RESULT_DEFAULTS, COLORS, EASING } from '../constants';
 
 const ResultsList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  li {
+  > li {
     position: relative;
     display: block;
     border-top: 2px solid ${COLORS.gray};
@@ -17,18 +17,15 @@ const ResultsList = styled.ul`
       border-bottom: 2px solid ${COLORS.gray};
     }
     a {
-      display: block;
-      position: absolute;
-      overflow: hidden;
-      text-indent: -499px;
-      z-index: 9;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+     color: ${COLORS.dark};
+     transition: color 0.3s ease;
+     &:hover {
+       color: ${COLORS.darkGray} !important;
+     }
     }
   }
 `;
+
 const ResultsItem = styled.div`
   padding: 2rem 1.5rem 1.5rem;
   padding-left: 2.5rem;
@@ -42,10 +39,6 @@ const ResultsItem = styled.div`
       position: relative;
       padding-right: 1.5rem;
     }
-  }
-  + span {
-    opacity: ${props => props.active ? '1' : '1'};
-    transform: ${props => props.active ? 'translateX(0)' : 'translateX(0)'};
   }
 `;
 
@@ -90,14 +83,16 @@ const SearchResults = ({
       {searchResults.map((result, index) => 
       <li key={result.id}>
         <Number>{getNumberDisplay(index)}</Number>
-        <Link to={getLinkTo(index)}>View Store on Map</Link>
         <ResultsItem active={activeIndex === index}>
-          <h3>
-            <span>{result.name} <ArrowIcon active={activeIndex === index} /></span>
-          </h3>
-          <Address result={result} />
+          <Link to={getLinkTo(index)} title="View Store on Map">
+            <h3>
+              <span>{result.name} <ArrowIcon active={activeIndex === index} /></span>
+            </h3>
+          </Link>
           {RESULT_DEFAULTS.showPhone &&
           <Phone>{result.phone}</Phone>}
+          <Address result={result} />
+          <Hours content={result.hours} />
         </ResultsItem>
       </li>)}
     </ResultsList>

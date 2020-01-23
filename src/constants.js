@@ -42,7 +42,7 @@ export const RESULT_DEFAULTS = {
   tableId: process.env.REACT_APP_HS_HUBDB_TABLE_ID,
   limit: 15,
   absoluteLimit: 100,
-  showPhone: false,
+  showPhone: true,
   ...getConfig('RESULT_DEFAULTS'),
 };
 

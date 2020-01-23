@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../constants';
 
@@ -41,6 +41,8 @@ const ArrowElement = styled.div`
   top: 0;
   right: 0;
   color: ${props => props.active ? COLORS.primary : COLORS.dark};
+  transform: ${props => props.active ? `translateX(5px)` : `translateX(-15px)`};
+  opacity: ${props => props.active ? `1` : `0`};
   transition: all 0.3s ease;
   svg {
     display: block;
@@ -63,5 +65,58 @@ export const ArrowIcon  = ({ active }) => (
 
 export const Phone = styled.div`
   font-weight: bold;
+  font-size: 0.85rem;
   color: ${COLORS.primary};
+  margin: -0.5rem 0 0.5rem;
 `;
+
+
+const HoursElement = styled.div`
+`;
+
+const HoursDrawer = styled.div`
+  height: ${props => props.showing ? `auto` : `0px`};
+  overflow: hidden;
+
+  ul {
+    padding: 0.5rem 0 0;
+    margin: 0;
+    border: none;
+    font-size: 0.9rem;
+    color: ${COLORS.darkGray};
+
+    li, li:last-child {
+      border: none;
+    }
+  }
+`;
+
+const ShowHoursBtn = styled.button`
+  border: none;
+  outline: none;
+  appearance: none;
+  padding: 0;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: ${COLORS.primary};
+  cursor: pointer;
+`;
+
+export const Hours = ({content}) => {
+  const [showing, setShowing] = useState(false);
+  const showHours = e => {
+    e.preventDefault();
+    setShowing(!showing);
+  };
+  return (
+    <HoursElement>
+      <ShowHoursBtn type="button" onClick={showHours}>
+        <span>{showing ? 'Hide' : 'Show'} Hours</span>
+      </ShowHoursBtn>
+      <HoursDrawer showing={showing}>
+        <div dangerouslySetInnerHTML={{__html: content}}>
+        </div>
+      </HoursDrawer>
+    </HoursElement>
+  );
+};
