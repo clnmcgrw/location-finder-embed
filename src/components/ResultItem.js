@@ -21,10 +21,10 @@ export const Address = ({ result }) => (
   <AddressHtml>
     <div className="lfe-street-addr">
       <span>{result.address_1}</span>
-      {result.address_2.length > 0 &&
+      {(result.address_2 && result.address_2.length > 0) &&
       <span>{result.address_2}</span>}
     </div>
-    {result.address_3 && 
+    {(result.address_3 && result.address_3.length > 0) &&
       <small>{result.address_3}</small>}
     <div className="lfe-city-state">
       <span>{result.city}, {result.state} {result.zipcode}</span>
