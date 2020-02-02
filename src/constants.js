@@ -1,3 +1,13 @@
+// support gsheet or hubdb as data source
+export const DATA_SOURCE = 'gsheets'; // OR 'hubdb'
+
+export const GSHEET_SETTINGS = {
+  SCOPES: '',
+  DISCOVERY_DOCS: [''],
+  LOCATIONS_SHEET_ID: '1ELP2bRhfDs7QKHhdnnzVbH_7Q1R7LBjwYGqRJFhZvfg',
+  
+};
+
 
 // -router paths
 // user loads page - geolocation attempt

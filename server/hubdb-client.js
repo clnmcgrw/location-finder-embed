@@ -13,6 +13,8 @@ const endpoints = {
   tableInfo: id => `${hsBase}hubdb/api/v2/tables/${id}?portalId=${portalId}`,
   getTableRows: id => `${hsBase}hubdb/api/v2/tables/${id}/rows?portalId=${portalId}`,
   addTableRow: id => `${hsBase}hubdb/api/v2/tables/${id}/rows?hapikey=${hapikey}`,
+  tableRow: (tableid, rowid) => `${hsBase}hubdb/api/v2/tables/${tableid}/rows/${rowid}?hapikey=${hapikey}`,
+  publishTable: id => `${hsBase}hubdb/api/v2/tables/${id}/publish?hapikey=${hapikey}`,
 };
 
 const request = async (url, opts = {}) => {
@@ -27,14 +29,27 @@ const request = async (url, opts = {}) => {
 
 const getTableInfo = id => request(endpoints.tableInfo(id));
 const getTableRows = id => request(endpoints.getTableRows(id));
+
 const addTableRow = (id, values) => request(endpoints.addTableRow(id), {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ values }),
 });
 
+const updateTableRow = (tableid, rowid, values) => request(endpoints.tableRow(tableid, rowid), {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ values }),
+});
+
+const publishTable = id => request(endpoints.publishTable(id), {
+  method: 'PUT',
+});
+
 module.exports = {
   getTableInfo,
-  addTableRow,
   getTableRows,
+  addTableRow,
+  updateTableRow,
+  publishTable,
 };
