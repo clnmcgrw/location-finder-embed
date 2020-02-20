@@ -92,7 +92,8 @@ const SearchResults = ({
           {RESULT_DEFAULTS.showPhone &&
           <Phone>{result.phone}</Phone>}
           <Address result={result} />
-          <Hours content={result.hours} />
+          {(result.hours && result.hours.length > 10) &&
+          <Hours content={result.hours} />}
         </ResultsItem>
       </li>)}
     </ResultsList>
