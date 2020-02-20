@@ -2,8 +2,8 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ReactMapGL, { FlyToInterpolator, NavigationControl, Marker, Popup, TRANSITION_EVENTS } from 'react-map-gl';
-import WebMercatorViewport from 'viewport-mercator-project';
+import ReactMapGL, { NavigationControl, Marker, Popup } from 'react-map-gl';
+// import WebMercatorViewport from 'viewport-mercator-project';
 import PopupHtml from './PopupHtml';
 import { COLORS, MAP_DEFAULTS } from '../constants';
 
